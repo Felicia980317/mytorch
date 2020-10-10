@@ -1,11 +1,11 @@
 import queue
 import random
+import time
 from random import shuffle
 
 import numpy as np
 import torch
 import torch.multiprocessing as mp
-import time
 
 
 class ParaDataLoader(object):
