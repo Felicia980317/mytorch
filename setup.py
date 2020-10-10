@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name="mytorch",  # 包名字
-    version="0.1",  # 包版本
+    version="0.2",  # 包版本
     description="",  # 简单描述
     author="",  # 作者
     author_email="",  # 作者邮箱
