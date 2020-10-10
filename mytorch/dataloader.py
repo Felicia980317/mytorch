@@ -18,6 +18,8 @@ class DataLoader(object):
         self.ep = 0
         self.i = 0
         self.random_pool = [_ for _ in range(self.n_samples)]
+        if use_shuffle:
+            shuffle(self.random_pool)
 
     def __iter__(self):
         return self

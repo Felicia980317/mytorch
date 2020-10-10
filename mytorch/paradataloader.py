@@ -5,11 +5,18 @@ from random import shuffle
 import numpy as np
 import torch
 import torch.multiprocessing as mp
+import time
 
 
 class ParaDataLoader(object):
     def __init__(
-        self, dataset, batch_size, prefetch_size=2, use_shuffle=True, n_workers=1
+        self,
+        dataset,
+        batch_size,
+        prefetch_size=2,
+        use_shuffle=True,
+        n_workers=1,
+        autostart=True,
     ):
         super(ParaDataLoader, self).__init__()
         self.dataset = dataset
@@ -25,7 +32,8 @@ class ParaDataLoader(object):
         self.workers_status = manager.Array("i", [0] * self.n_workers)
         self.is_stop = manager.Value("i", 0)
 
-        self.start()
+        if autostart:
+            self.start()
 
     def updateParallel(self, n_workers, workers_status, is_stop):
         try:
@@ -33,6 +41,7 @@ class ParaDataLoader(object):
                 if np.sum(workers_status[:]) == n_workers:
                     for i in range(n_workers):
                         workers_status[i] = 0
+                time.sleep(0.5)
             print("updateParallel Done.")
         except Exception as e:
             print("Exception in updateParallel:{}".format(e))
@@ -54,6 +63,7 @@ class ParaDataLoader(object):
                         idx_batch_list.append(idx_batch)
                     idx += batch_size
                     q_pools.put(idx_batch_list)
+                time.sleep(0.5)
             print("updatePools Done.")
         except Exception as e:
             print("Exception in updatePools:{}".format(e))
@@ -72,6 +82,7 @@ class ParaDataLoader(object):
 
                     q.put(tuple(torch.stack(_out) for _out in out))
                     workers_status[worker] = 1
+                time.sleep(0.25)
             print("run{} Done.".format(worker))
 
         except Exception as e:

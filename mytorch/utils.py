@@ -1,11 +1,14 @@
 import torch
 import cv2
 
+
 def save(path, model):
     torch.save(model.state_dict(), path)
 
+
 def load(path, model):
-    mdoel.load_state_dict(torch.load(path))
+    model.load_state_dict(torch.load(path))
+
 
 def getDevice(cuda=True):
     cuda = cuda and torch.cuda.is_available()

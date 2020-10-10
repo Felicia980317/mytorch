@@ -210,7 +210,6 @@ class SepConv2d(nn.Module):
         if use_bn:
             self.bn2 = batchnorm2d(out_cha)
 
-
     def forward(self, x):
         x = self.convdw(x)
         x = self.bn1(x)
